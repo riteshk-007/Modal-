@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
+import { Check, ChevronsUpDown, Plus, PlusCircle, Trash2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -97,7 +97,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
           <DialogTitle>Check In / Check Out</DialogTitle>
         </DialogHeader>
         <div className="flex items-center justify-center md:flex-row flex-col ">
-          <div className="my-2 md:my-4 w-full md:w-9/12 p-2 md:p-5">
+          <div className="my-2 md:my-4 w-full md:w-9/12  md:p-5">
             {/* Admin /Id  Input */}
             <div className="relative my-2 md:my-4">
               <Label
@@ -309,7 +309,25 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
               />
             </div>
           </div>
-          <div className="w-full md:w-1/4 h-full"></div>
+          <div className="w-full md:w-1/4 h-full">
+            <div className="flex w-full justify-between items-center">
+              <h2 className="text-xs font-bold text-gray-600">
+                Serial Number of Motor PCB
+              </h2>
+              <div className="flex items-center justify-between gap-2">
+                <Button variant="default" size="sm">
+                  <Plus className="h-4 w-4" />
+                </Button>
+                <Button variant="destructive" size="sm">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            <div className="w-full border my-2 h-[80%] overflow-hidden overflow-y-auto"></div>
+          </div>
+        </div>
+        <div className="w-full flex items-center justify-end">
+          <Button className="cursor-pointer md:w-1/4 ">Check In</Button>
         </div>
       </DialogContent>
     </Dialog>
