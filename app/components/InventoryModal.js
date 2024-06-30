@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -53,6 +53,8 @@ const Products = [
 export default function InventoryModal() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
+  const [open2, setOpen2] = useState(false);
+  const [value2, setValue2] = useState("");
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -70,6 +72,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
           <DialogTitle>Check In / Check Out</DialogTitle>
         </DialogHeader>
         <div className="my-4">
+          {/* Admin /Id  Input */}
           <div className="relative my-4">
             <Label
               className="absolute -top-2 left-2 bg-white rounded px-1 text-xs text-gray-500"
@@ -83,6 +86,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
               className="rounded w-full"
             />
           </div>
+          {/* Products Input first */}
           <div className="relative grid md:grid-cols-3 gap-4 sm:grid-cols-2 my-4">
             <Label
               className="absolute -top-2 left-2 bg-white rounded px-1 text-xs text-gray-500"
@@ -144,12 +148,89 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
               >
                 Quantity
               </Label>
-              <Input id="quantity" placeholder="1" className="rounded w-full" />
+              <Input
+                id="quantity"
+                placeholder="10"
+                className="rounded w-full"
+              />
             </div>
             <Button className="w-full sm:col-span-2 md:col-span-1">
               Serial Number
             </Button>
           </div>
+          {/* Products Input second */}
+          <div className="relative grid md:grid-cols-3 gap-4 sm:grid-cols-2 my-4">
+            <Popover open={open2} onOpenChange={setOpen2}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open2}
+                  className="w-full justify-between"
+                >
+                  {value2
+                    ? Products.find((Product) => Product.value === value2)
+                        ?.label
+                    : "Select Product..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search Product..." />
+                  <CommandList>
+                    <CommandEmpty>No Product found.</CommandEmpty>
+                    <CommandGroup>
+                      {Products.map((Product) => (
+                        <CommandItem
+                          key={Product.value}
+                          value={Product.value}
+                          onSelect={(currentValue) => {
+                            setValue2(
+                              currentValue === value2 ? "" : currentValue
+                            );
+                            setOpen2(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              value2 === Product.value
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {Product.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+            <div className="relative">
+              <Input
+                id="quantity2"
+                placeholder="10"
+                className="rounded w-full"
+              />
+            </div>
+            <Button
+              variant="outline"
+              className="w-full sm:col-span-2 md:col-span-1 bg-gray-100"
+            >
+              Selected
+            </Button>
+          </div>
+          {/*  Add more button */}
+          <Button
+            size="sm"
+            variant="outline"
+            className="gap-1 w-full bg-gray-100"
+          >
+            <PlusCircle className="h-3.5 w-3.5" />
+            Add Variant
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
