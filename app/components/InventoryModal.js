@@ -26,6 +26,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
 
 const Products = [
   {
@@ -305,6 +306,13 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
                 </PopoverContent>
               </Popover>
             </div>
+          </div>
+          {/* Description */}
+          <div className="relative my-4">
+            <Label className="text-gray-500 text-sm" htmlFor="description">
+              Description
+            </Label>
+            <Textarea placeholder="Type your message here.  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem repellendus expedita facere cum. Saepe, quidem! Nihil facilis." />
           </div>
         </div>
       </DialogContent>
