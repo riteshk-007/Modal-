@@ -71,12 +71,12 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
           Manage Inventory
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-white p-4 ">
+      <DialogContent className="bg-white p-4" aria-describedby="description">
         <DialogHeader>
           <DialogTitle>Check In / Check Out</DialogTitle>
         </DialogHeader>
         <div className="flex items-center justify-center md:flex-row flex-col ">
-          <div className="my-2 md:my-4 w-full md:w-9/12">
+          <div className="my-2 md:my-4 w-full md:w-9/12 p-2 md:p-5">
             {/* Admin /Id  Input */}
             <div className="relative my-2 md:my-4">
               <Label
@@ -314,10 +314,13 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
               <Label className="text-gray-500 text-sm" htmlFor="description">
                 Description
               </Label>
-              <Textarea placeholder="Type your message here.  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem repellendus expedita facere cum. Saepe, quidem! Nihil facilis." />
+              <Textarea
+                id="description"
+                placeholder="Type your message here.  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem repellendus expedita facere cum. Saepe, quidem! Nihil facilis."
+              />
             </div>
           </div>
-          <div className="w-full md:w-1/4"></div>
+          <div className="w-full md:w-1/4 h-full"></div>
         </div>
       </DialogContent>
     </Dialog>
