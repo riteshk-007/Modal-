@@ -50,69 +50,6 @@ const Products = [
   },
 ];
 
-function ProductInput({
-  open,
-  setOpen,
-  value,
-  setValue,
-  quantityId,
-  buttonText,
-}) {
-  return (
-    <div className="relative grid md:grid-cols-3 gap-4 sm:grid-cols-2 my-4">
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className="w-full justify-between"
-          >
-            {value
-              ? Products.find((Product) => Product.value === value)?.label
-              : "Select Product..."}
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-full p-0">
-          <Command>
-            <CommandInput placeholder="Search Product..." />
-            <CommandList>
-              <CommandEmpty>No Product found.</CommandEmpty>
-              <CommandGroup>
-                {Products.map((Product) => (
-                  <CommandItem
-                    key={Product.value}
-                    value={Product.value}
-                    onSelect={(currentValue) => {
-                      setValue(currentValue === value ? "" : currentValue);
-                      setOpen(false);
-                    }}
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        value === Product.value ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                    {Product.label}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-      <div className="relative">
-        <Input id={quantityId} placeholder="10" className="rounded w-full" />
-      </div>
-      <Button className="w-full sm:col-span-2 md:col-span-1">
-        {buttonText}
-      </Button>
-    </div>
-  );
-}
-
 export default function InventoryModal() {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
@@ -152,25 +89,142 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
               className="rounded w-full"
             />
           </div>
-
-          {/* Product Inputs */}
-          <ProductInput
-            open={open}
-            setOpen={setOpen}
-            value={value}
-            setValue={setValue}
-            quantityId="quantity"
-            buttonText="Serial Number"
-          />
-          <ProductInput
-            open={open2}
-            setOpen={setOpen2}
-            value={value2}
-            setValue={setValue2}
-            quantityId="quantity2"
-            buttonText="Selected"
-          />
-
+          {/* Products Input first */}
+          <div className="relative grid md:grid-cols-3 gap-4 sm:grid-cols-2 my-4">
+            <Label
+              className="absolute -top-2 left-2 bg-white rounded px-1 text-xs text-gray-500"
+              htmlFor="products"
+            >
+              Products
+            </Label>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="w-full justify-between"
+                >
+                  {value
+                    ? Products.find((Product) => Product.value === value)?.label
+                    : "Select Product..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search Product..." />
+                  <CommandList>
+                    <CommandEmpty>No Product found.</CommandEmpty>
+                    <CommandGroup>
+                      {Products.map((Product) => (
+                        <CommandItem
+                          key={Product.value}
+                          value={Product.value}
+                          onSelect={(currentValue) => {
+                            setValue(
+                              currentValue === value ? "" : currentValue
+                            );
+                            setOpen(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              value === Product.value
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {Product.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+            <div className=" relative">
+              <Label
+                htmlFor="quantity"
+                className="absolute -top-2 left-2 bg-white rounded px-1 text-xs text-gray-500"
+              >
+                Quantity
+              </Label>
+              <Input
+                id="quantity"
+                placeholder="10"
+                className="rounded w-full"
+              />
+            </div>
+            <Button className="w-full sm:col-span-2 md:col-span-1">
+              Serial Number
+            </Button>
+          </div>
+          {/* Products Input second */}
+          <div className="relative grid md:grid-cols-3 gap-4 sm:grid-cols-2 my-4">
+            <Popover open={open2} onOpenChange={setOpen2}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open2}
+                  className="w-full justify-between"
+                >
+                  {value2
+                    ? Products.find((Product) => Product.value === value2)
+                        ?.label
+                    : "Select Product..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Command>
+                  <CommandInput placeholder="Search Product..." />
+                  <CommandList>
+                    <CommandEmpty>No Product found.</CommandEmpty>
+                    <CommandGroup>
+                      {Products.map((Product) => (
+                        <CommandItem
+                          key={Product.value}
+                          value={Product.value}
+                          onSelect={(currentValue) => {
+                            setValue2(
+                              currentValue === value2 ? "" : currentValue
+                            );
+                            setOpen2(false);
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              value2 === Product.value
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {Product.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+            <div className="relative">
+              <Input
+                id="quantity2"
+                placeholder="10"
+                className="rounded w-full"
+              />
+            </div>
+            <Button
+              variant="outline"
+              className="w-full sm:col-span-2 md:col-span-1 bg-gray-100"
+            >
+              Selected
+            </Button>
+          </div>
           {/*  Add more button */}
           <Button
             size="sm"
@@ -180,7 +234,6 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
             <PlusCircle className="h-3.5 w-3.5" />
             Add Variant
           </Button>
-
           {/* Usage inputs */}
           <div className="relative grid md:grid-cols-2 gap-4  my-4">
             <div className="relative">
@@ -196,6 +249,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
                 className="rounded w-full"
               />
             </div>
+
             <Popover open={open3} onOpenChange={setOpen3}>
               <PopoverTrigger asChild>
                 <Button
