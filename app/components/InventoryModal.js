@@ -234,7 +234,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
             <PlusCircle className="h-3.5 w-3.5" />
             Add Variant
           </Button>
-          {/* Usage inputs */}
+          {/* Usage inputs  third*/}
           <div className="relative grid md:grid-cols-2 gap-4  my-4">
             <div className="relative">
               <Label
@@ -249,55 +249,62 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
                 className="rounded w-full"
               />
             </div>
-
-            <Popover open={open3} onOpenChange={setOpen3}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={open3}
-                  className="w-full justify-between"
-                >
-                  {value3
-                    ? Products.find((Product) => Product.value === value3)
-                        ?.label
-                    : "Select Product..."}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-full p-0">
-                <Command>
-                  <CommandInput placeholder="Search Product..." />
-                  <CommandList>
-                    <CommandEmpty>No Product found.</CommandEmpty>
-                    <CommandGroup>
-                      {Products.map((Product) => (
-                        <CommandItem
-                          key={Product.value}
-                          value={Product.value}
-                          onSelect={(currentValue) => {
-                            setValue3(
-                              currentValue === value3 ? "" : currentValue
-                            );
-                            setOpen3(false);
-                          }}
-                        >
-                          <Check
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              value3 === Product.value
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                          {Product.label}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
+            <div className="relative">
+              <Label
+                className="absolute -top-2 left-2 bg-white rounded px-1 text-xs text-gray-500"
+                htmlFor="reason"
+              >
+                Reason
+              </Label>
+              <Popover open={open3} onOpenChange={setOpen3}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open3}
+                    className="w-full justify-between"
+                  >
+                    {value3
+                      ? Products.find((Product) => Product.value === value3)
+                          ?.label
+                      : "Select Product..."}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput placeholder="Search Product..." />
+                    <CommandList>
+                      <CommandEmpty>No Product found.</CommandEmpty>
+                      <CommandGroup>
+                        {Products.map((Product) => (
+                          <CommandItem
+                            key={Product.value}
+                            value={Product.value}
+                            onSelect={(currentValue) => {
+                              setValue3(
+                                currentValue === value3 ? "" : currentValue
+                              );
+                              setOpen3(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                value3 === Product.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {Product.label}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
         </div>
       </DialogContent>
