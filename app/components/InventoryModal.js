@@ -10,7 +10,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { Check, ChevronsUpDown, Plus, PlusCircle, Trash2 } from "lucide-react";
+import {
+  ArrowDownUp,
+  Check,
+  ChevronsUpDown,
+  Plus,
+  PlusCircle,
+  Trash2,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -27,6 +34,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Table,
+  TableHeader,
+} from "@/components/ui/table";
 
 const Products = [
   {
@@ -51,6 +66,33 @@ const Products = [
   },
 ];
 
+const invoices = [
+  { goods: "Serial123" },
+  { goods: "Serial456" },
+  { goods: "Serial789" },
+];
+const Reasons = [
+  {
+    value: "reason1",
+    label: "Reason 1",
+  },
+  {
+    value: "reason2",
+    label: "Reason 2",
+  },
+  {
+    value: "reason3",
+    label: "Reason 3",
+  },
+  {
+    value: "reason4",
+    label: "Reason 4",
+  },
+  {
+    value: "reason5",
+    label: "Reason 5",
+  },
+];
 export default function InventoryModal() {
   const [productInputs, setProductInputs] = useState([
     { id: 1, open: false, value: "", quantity: "", isSelected: false },
@@ -73,8 +115,8 @@ export default function InventoryModal() {
   };
 
   const updateProductInput = (id, field, value) => {
-    setProductInputs(
-      productInputs.map((input) =>
+    setProductInputs((prevInputs) =>
+      prevInputs.map((input) =>
         input.id === id ? { ...input, [field]: value } : input
       )
     );
@@ -85,9 +127,9 @@ export default function InventoryModal() {
       <DialogTrigger asChild>
         <Button
           className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
-border-blue-600
-border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
-active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blue-700"
+        border-blue-600
+        border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+        active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blue-700"
         >
           Manage Inventory
         </Button>
@@ -257,22 +299,22 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
                       className="w-full justify-between"
                     >
                       {value3
-                        ? Products.find((Product) => Product.value === value3)
+                        ? Reasons.find((Reason) => Reason.value === value3)
                             ?.label
-                        : "Select Product..."}
+                        : "Select Reason..."}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-full p-0">
                     <Command>
-                      <CommandInput placeholder="Search Product..." />
+                      <CommandInput placeholder="Search Reason..." />
                       <CommandList>
-                        <CommandEmpty>No Product found.</CommandEmpty>
+                        <CommandEmpty>No Reason found.</CommandEmpty>
                         <CommandGroup>
-                          {Products.map((Product) => (
+                          {Reasons.map((Reason) => (
                             <CommandItem
-                              key={Product.value}
-                              value={Product.value}
+                              key={Reason.value}
+                              value={Reason.value}
                               onSelect={(currentValue) => {
                                 setValue3(
                                   currentValue === value3 ? "" : currentValue
@@ -283,12 +325,12 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
                               <Check
                                 className={cn(
                                   "mr-2 h-4 w-4",
-                                  value3 === Product.value
+                                  value3 === Reason.value
                                     ? "opacity-100"
                                     : "opacity-0"
                                 )}
                               />
-                              {Product.label}
+                              {Reason.label}
                             </CommandItem>
                           ))}
                         </CommandGroup>
@@ -323,7 +365,29 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blu
                 </Button>
               </div>
             </div>
-            <div className="w-full border my-2 h-[80%] overflow-hidden overflow-y-auto"></div>
+
+            <div className="w-full border my-2 h-[80%] overflow-hidden overflow-y-auto rounded custom-scrollbar">
+              <Table>
+                <TableHeader>
+                  <TableRow className="text-xs font-semibold">
+                    <TableHead className="w-full">#</TableHead>
+                    <TableHead>Serial Number</TableHead>
+                    <TableHead>
+                      <ArrowDownUp className="h-4 w-4" />
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {invoices.map((invoice, i) => (
+                    <TableRow key={i} className="text-xs">
+                      <TableCell className="font-medium">{i + 1}</TableCell>
+
+                      <TableCell>{invoice.goods}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </div>
         </div>
         <div className="w-full flex items-center justify-end">
