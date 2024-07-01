@@ -159,9 +159,9 @@ export default function InventoryModal() {
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="w-full h-full">
           <div className="flex items-center justify-center md:flex-row flex-col ">
-            <div className="my-2 md:my-4 w-full md:w-9/12  md:p-5">
+            <div className="my-2 md:my-[14px] w-full md:w-9/12  md:p-2">
               {/* Admin /Id  Input */}
-              <div className="relative my-2 md:my-4 flex-col flex">
+              <div className="relative my-2 md:my-[14px] flex-col flex">
                 <Label
                   className="absolute -top-2 left-2 bg-white rounded px-1 text-xs text-gray-500"
                   htmlFor="admin"
@@ -191,7 +191,7 @@ export default function InventoryModal() {
               {fields.map((field, index) => (
                 <div
                   key={field.id}
-                  className={`relative grid md:grid-cols-3 gap-4 sm:grid-cols-2 my-2 md:my-4 ${
+                  className={`relative grid md:grid-cols-3 gap-4 sm:grid-cols-2 my-2 md:my-[14px] ${
                     field.isSelected ? "editable" : ""
                   }`}
                 >
@@ -203,63 +203,65 @@ export default function InventoryModal() {
                       Products
                     </Label>
                   )}
-                  <Controller
-                    name={`products.${index}.product`}
-                    control={control}
-                    rules={{ required: "Product is required" }}
-                    render={({ field }) => (
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className="w-full justify-between"
-                          >
-                            {field.value
-                              ? Products.find(
-                                  (product) => product.value === field.value
-                                )?.label
-                              : "Select Product..."}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-0">
-                          <Command>
-                            <CommandInput placeholder="Search Product..." />
-                            <CommandList>
-                              <CommandEmpty>No Product found.</CommandEmpty>
-                              <CommandGroup>
-                                {Products.map((product) => (
-                                  <CommandItem
-                                    key={product.value}
-                                    value={product.value}
-                                    onSelect={() => {
-                                      field.onChange(product.value);
-                                    }}
-                                  >
-                                    <Check
-                                      className={cn(
-                                        "mr-2 h-4 w-4",
-                                        field.value === product.value
-                                          ? "opacity-100"
-                                          : "opacity-0"
-                                      )}
-                                    />
-                                    {product.label}
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
+                  <div>
+                    <Controller
+                      name={`products.${index}.product`}
+                      control={control}
+                      rules={{ required: "Product is required" }}
+                      render={({ field }) => (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className="w-full justify-between"
+                            >
+                              {field.value
+                                ? Products.find(
+                                    (product) => product.value === field.value
+                                  )?.label
+                                : "Select Product..."}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-full p-0">
+                            <Command>
+                              <CommandInput placeholder="Search Product..." />
+                              <CommandList>
+                                <CommandEmpty>No Product found.</CommandEmpty>
+                                <CommandGroup>
+                                  {Products.map((product) => (
+                                    <CommandItem
+                                      key={product.value}
+                                      value={product.value}
+                                      onSelect={() => {
+                                        field.onChange(product.value);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          field.value === product.value
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                      {product.label}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                      )}
+                    />
+                    {errors.products?.[index]?.product && (
+                      <span className="text-red-500 text-xs">
+                        {errors.products[index].product.message}
+                      </span>
                     )}
-                  />
-                  {errors.products?.[index]?.product && (
-                    <span className="text-red-500 text-xs">
-                      {errors.products[index].product.message}
-                    </span>
-                  )}
+                  </div>
                   <div className="relative">
                     <Label
                       htmlFor={`quantity-${field.id}`}
@@ -322,7 +324,7 @@ export default function InventoryModal() {
                 Add Variant
               </Button>
               {/* Usage inputs */}
-              <div className="relative grid md:grid-cols-2 gap-4  my-2 md:my-4">
+              <div className="relative grid md:grid-cols-2 gap-4  my-2 md:my-[14px]">
                 <div className="relative">
                   <Label
                     className="absolute -top-2 left-2 bg-white rounded px-1 text-xs text-gray-500"
@@ -418,7 +420,7 @@ export default function InventoryModal() {
                 </div>
               </div>
               {/* Description */}
-              <div className="relative my-2 md:my-4 flex-col flex">
+              <div className="relative my-2 md:my-[14px] flex-col flex">
                 <Label className="text-gray-500 text-sm" htmlFor="description">
                   Description
                 </Label>

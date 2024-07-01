@@ -12,8 +12,8 @@ const TableData = ({ data, onSelect }) => {
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Serial Number</TableHead>
+        <TableRow className="text-xs">
+          <TableHead className="w-full">Serial Number</TableHead>
           <TableHead>Product</TableHead>
           <TableHead>Quantity</TableHead>
         </TableRow>
@@ -23,7 +23,7 @@ const TableData = ({ data, onSelect }) => {
           <TableRow
             key={index}
             onClick={() => onSelect(item.serialNumber)}
-            className="cursor-pointer hover:bg-gray-100"
+            className="cursor-pointer hover:bg-gray-100 text-xs"
           >
             <TableCell className="font-medium">{item.serialNumber}</TableCell>
             <TableCell>{item.products[0].product}</TableCell>
