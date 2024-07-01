@@ -57,7 +57,8 @@ const Reasons = [
 export default function InventoryModal() {
   const [open3, setOpen3] = useState(false);
   const [savedData, setSavedData] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentSerial, setCurrentSerial] = useState(null);
 
   const {
     control,
@@ -65,6 +66,7 @@ export default function InventoryModal() {
     formState: { errors },
     reset,
     setValue,
+    getValues,
   } = useForm({
     defaultValues: {
       admin: "",
@@ -84,13 +86,32 @@ export default function InventoryModal() {
   });
 
   const onSubmit = (data) => {
-    const quantity = parseInt(data.products[0].quantity, 10);
-    const newData = Array(quantity)
-      .fill()
-      .map(() => ({ ...data, serialNumber: generateSerialNumber() }));
+    const newData = data.products.flatMap((item) => {
+      const quantity = parseInt(item.quantity, 10);
+      return Array(quantity)
+        .fill()
+        .map(() => ({
+          ...data,
+          serialNumber: generateSerialNumber(),
+          products: [
+            { product: item.product, quantity: 1, isSelected: item.isSelected },
+          ],
+        }));
+    });
     setSavedData([...savedData, ...newData]);
-    console.log(newData);
     reset();
+    setIsEditing(false);
+    setCurrentSerial(null);
+  };
+
+  const handleSave = () => {
+    const updatedData = savedData.map((item) =>
+      item.serialNumber === currentSerial ? { ...item, ...getValues() } : item
+    );
+    setSavedData(updatedData);
+    reset();
+    setIsEditing(false);
+    setCurrentSerial(null);
   };
 
   const generateSerialNumber = () => {
@@ -109,27 +130,11 @@ export default function InventoryModal() {
           setValue(key, value);
         }
       });
-      setIsDisabled(true);
+      setIsEditing(true);
+      setCurrentSerial(serialNumber);
     }
   };
 
-  useEffect(() => {
-    if (isDisabled) {
-      const formElements = document.querySelectorAll(
-        "input, select, textarea, button"
-      );
-      formElements.forEach((element) => {
-        element.disabled = true;
-      });
-    } else {
-      const formElements = document.querySelectorAll(
-        "input, select, textarea, button"
-      );
-      formElements.forEach((element) => {
-        element.disabled = false;
-      });
-    }
-  }, [isDisabled]);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -180,7 +185,9 @@ export default function InventoryModal() {
               {fields.map((field, index) => (
                 <div
                   key={field.id}
-                  className="relative grid md:grid-cols-3 gap-4 sm:grid-cols-2 my-2 md:my-4"
+                  className={`relative grid md:grid-cols-3 gap-4 sm:grid-cols-2 my-2 md:my-4 ${
+                    field.isSelected ? "editable" : ""
+                  }`}
                 >
                   {index === 0 && (
                     <Label
@@ -241,7 +248,7 @@ export default function InventoryModal() {
                         </PopoverContent>
                       </Popover>
                     )}
-                  />{" "}
+                  />
                   {errors.products?.[index]?.product && (
                     <span className="text-red-500 text-xs">
                       {errors.products[index].product.message}
@@ -440,13 +447,19 @@ export default function InventoryModal() {
             </div>
           </div>
           <div className="w-full flex items-center justify-end">
-            <Button
-              className="cursor-pointer md:w-1/4"
-              type="submit"
-              disabled={isDisabled}
-            >
-              Check In
-            </Button>
+            {isEditing ? (
+              <Button
+                className="cursor-pointer md:w-1/4"
+                onClick={handleSave}
+                type="button"
+              >
+                Save
+              </Button>
+            ) : (
+              <Button className="cursor-pointer md:w-1/4" type="submit">
+                Check In
+              </Button>
+            )}
           </div>
         </form>
       </DialogContent>
