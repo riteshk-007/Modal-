@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowDownUp,
   Check,
@@ -56,11 +56,15 @@ const Reasons = [
 
 export default function InventoryModal() {
   const [open3, setOpen3] = useState(false);
+  const [savedData, setSavedData] = useState([]);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
+    setValue,
   } = useForm({
     defaultValues: {
       admin: "",
@@ -80,17 +84,60 @@ export default function InventoryModal() {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    const quantity = parseInt(data.products[0].quantity, 10);
+    const newData = Array(quantity)
+      .fill()
+      .map(() => ({ ...data, serialNumber: generateSerialNumber() }));
+    setSavedData([...savedData, ...newData]);
+    console.log(newData);
+    reset();
   };
 
+  const generateSerialNumber = () => {
+    return Math.random().toString(36).substr(2, 9).toUpperCase();
+  };
+
+  const handleSerialNumberSelect = (serialNumber) => {
+    const selectedData = savedData.find(
+      (item) => item.serialNumber === serialNumber
+    );
+    if (selectedData) {
+      Object.entries(selectedData).forEach(([key, value]) => {
+        if (key === "products") {
+          setValue("products", value);
+        } else {
+          setValue(key, value);
+        }
+      });
+      setIsDisabled(true);
+    }
+  };
+
+  useEffect(() => {
+    if (isDisabled) {
+      const formElements = document.querySelectorAll(
+        "input, select, textarea, button"
+      );
+      formElements.forEach((element) => {
+        element.disabled = true;
+      });
+    } else {
+      const formElements = document.querySelectorAll(
+        "input, select, textarea, button"
+      );
+      formElements.forEach((element) => {
+        element.disabled = false;
+      });
+    }
+  }, [isDisabled]);
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
           className="cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg
-        border-blue-600
-        border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
-        active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blue-700"
+      border-blue-600
+      border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:border-b-[6px]
+      active:border-b-[2px] active:brightness-90 active:translate-y-[2px] hover:bg-blue-700"
         >
           Manage Inventory
         </Button>
@@ -389,11 +436,15 @@ export default function InventoryModal() {
                   </Button>
                 </div>
               </div>
-              <TableData />
+              <TableData data={savedData} onSelect={handleSerialNumberSelect} />
             </div>
           </div>
           <div className="w-full flex items-center justify-end">
-            <Button className="cursor-pointer md:w-1/4" type="submit">
+            <Button
+              className="cursor-pointer md:w-1/4"
+              type="submit"
+              disabled={isDisabled}
+            >
               Check In
             </Button>
           </div>

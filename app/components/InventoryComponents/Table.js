@@ -1,42 +1,38 @@
+import React from "react";
 import {
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Table,
-    TableHeader,
-  } from "@/components/ui/table";
-import { ArrowDownUp } from "lucide-react";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
-  const invoices = [
-      { goods: "Serial123" },
-      { goods: "Serial456" },
-      { goods: "Serial789" },
-    ];
-const TableData = () => {
+const TableData = ({ data, onSelect }) => {
   return (
-     <div className="w-full border my-2 md:h-96 overflow-hidden overflow-y-auto rounded custom-scrollbar">
-     <Table className="h-full">
-       <TableHeader>
-         <TableRow className="text-xs font-semibold">
-           <TableHead className="w-full">#</TableHead>
-           <TableHead>Serial Number</TableHead>
-           <TableHead>
-             <ArrowDownUp className="h-4 w-4" />
-           </TableHead>
-         </TableRow>
-       </TableHeader>
-       <TableBody>
-         {invoices.map((invoice, i) => (
-           <TableRow key={i} className="text-xs">
-             <TableCell className="font-medium">{i + 1}</TableCell>
-             <TableCell>{invoice.goods}</TableCell>
-           </TableRow>
-         ))}
-       </TableBody>
-     </Table>
-   </div>
-  )
-}
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">Serial Number</TableHead>
+          <TableHead>Product</TableHead>
+          <TableHead>Quantity</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {data.map((item, index) => (
+          <TableRow
+            key={index}
+            onClick={() => onSelect(item.serialNumber)}
+            className="cursor-pointer hover:bg-gray-100"
+          >
+            <TableCell className="font-medium">{item.serialNumber}</TableCell>
+            <TableCell>{item.products[0].product}</TableCell>
+            <TableCell>{item.products[0].quantity}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+};
 
-export default TableData
+export default TableData;
