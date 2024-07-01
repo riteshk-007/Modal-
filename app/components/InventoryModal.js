@@ -135,6 +135,12 @@ export default function InventoryModal() {
     }
   };
 
+  const handleDeleteAll = () => {
+    setSavedData([]);
+    setIsEditing(false);
+    setCurrentSerial(null);
+    reset();
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -429,22 +435,31 @@ export default function InventoryModal() {
                 />
               </div>
             </div>
-            <div className="w-full md:w-1/4 h-full">
-              <div className="flex w-full h-full justify-between items-center">
-                <h2 className="text-xs font-bold text-gray-600">
-                  Serial Number of Motor PCB
-                </h2>
-                <div className="flex items-center justify-between gap-2">
-                  <Button variant="default" size="sm">
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                  <Button variant="destructive" size="sm">
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+            {savedData.length > 0 && (
+              <div className="w-full md:w-1/4 h-full">
+                <div className="flex w-full h-full justify-between items-center">
+                  <h2 className="text-xs font-bold text-gray-600">
+                    Serial Number of Motor PCB
+                  </h2>
+                  <div className="flex items-center justify-between gap-2">
+                    <Button variant="default" size="sm">
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={handleDeleteAll}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
+                <TableData
+                  data={savedData}
+                  onSelect={handleSerialNumberSelect}
+                />
               </div>
-              <TableData data={savedData} onSelect={handleSerialNumberSelect} />
-            </div>
+            )}
           </div>
           <div className="w-full flex items-center justify-end">
             {isEditing ? (
