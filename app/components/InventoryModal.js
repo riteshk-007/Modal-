@@ -34,15 +34,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Table,
-  TableHeader,
-} from "@/components/ui/table";
+
 import { useForm, useFieldArray, Controller } from "react-hook-form";
+import TableData from "./InventoryComponents/Table";
 
 const Products = [
   { value: "product1", label: "Product 1" },
@@ -50,12 +44,6 @@ const Products = [
   { value: "product3", label: "Product 3" },
   { value: "product4", label: "Product 4" },
   { value: "product5", label: "Product 5" },
-];
-
-const invoices = [
-  { goods: "Serial123" },
-  { goods: "Serial456" },
-  { goods: "Serial789" },
 ];
 
 const Reasons = [
@@ -377,7 +365,6 @@ export default function InventoryModal() {
                 <Controller
                   name="description"
                   control={control}
-                  rules={{ required: "Description is required" }}
                   render={({ field }) => (
                     <Textarea
                       {...field}
@@ -386,11 +373,6 @@ export default function InventoryModal() {
                     />
                   )}
                 />
-                {errors.description && (
-                  <span className="text-red-500 text-xs">
-                    {errors.description.message}
-                  </span>
-                )}
               </div>
             </div>
             <div className="w-full md:w-1/4 h-full">
@@ -407,28 +389,7 @@ export default function InventoryModal() {
                   </Button>
                 </div>
               </div>
-              {/* table  */}
-              <div className="w-full border my-2 md:h-96 overflow-hidden overflow-y-auto rounded custom-scrollbar">
-                <Table className="h-full">
-                  <TableHeader>
-                    <TableRow className="text-xs font-semibold">
-                      <TableHead className="w-full">#</TableHead>
-                      <TableHead>Serial Number</TableHead>
-                      <TableHead>
-                        <ArrowDownUp className="h-4 w-4" />
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {invoices.map((invoice, i) => (
-                      <TableRow key={i} className="text-xs">
-                        <TableCell className="font-medium">{i + 1}</TableCell>
-                        <TableCell>{invoice.goods}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+              <TableData />
             </div>
           </div>
           <div className="w-full flex items-center justify-end">
