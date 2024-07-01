@@ -111,7 +111,7 @@ export default function InventoryModal() {
         <DialogHeader>
           <DialogTitle>Check In / Check Out</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full h-full">
           <div className="flex items-center justify-center md:flex-row flex-col ">
             <div className="my-2 md:my-4 w-full md:w-9/12  md:p-5">
               {/* Admin /Id  Input */}
@@ -394,7 +394,7 @@ export default function InventoryModal() {
               </div>
             </div>
             <div className="w-full md:w-1/4 h-full">
-              <div className="flex w-full justify-between items-center">
+              <div className="flex w-full h-full justify-between items-center">
                 <h2 className="text-xs font-bold text-gray-600">
                   Serial Number of Motor PCB
                 </h2>
@@ -407,9 +407,9 @@ export default function InventoryModal() {
                   </Button>
                 </div>
               </div>
-
-              <div className="w-full border my-2 h-[80%] overflow-hidden overflow-y-auto rounded custom-scrollbar">
-                <Table>
+              {/* table  */}
+              <div className="w-full border my-2 md:h-96 overflow-hidden overflow-y-auto rounded custom-scrollbar">
+                <Table className="h-full">
                   <TableHeader>
                     <TableRow className="text-xs font-semibold">
                       <TableHead className="w-full">#</TableHead>
@@ -423,7 +423,6 @@ export default function InventoryModal() {
                     {invoices.map((invoice, i) => (
                       <TableRow key={i} className="text-xs">
                         <TableCell className="font-medium">{i + 1}</TableCell>
-
                         <TableCell>{invoice.goods}</TableCell>
                       </TableRow>
                     ))}
